@@ -22,3 +22,7 @@
 .right {
   text-align: right;
 }
+
+.warning {
+  border-bottom: 1px solid var(--error-color);
+}
