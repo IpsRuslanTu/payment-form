@@ -2,10 +2,11 @@ import {$host} from './index'
 import {PaymentCard} from '../model/PaymentCard'
 import {PaymentCardMapper} from './mapper/PaymentCardMapper'
 import {PaymentStatus} from '../model/PaymentStatus'
+import {PaymentStatusMapper} from './mapper/PaymentStatusMapper'
 
 export class PaymentApi {
   public static async pay(card: PaymentCard): Promise<string> {
-    const apiCard = PaymentCardMapper.deserialize(card)
+    const apiCard = PaymentCardMapper.serialize(card)
 
     const {data} = await $host.post('api',{
       jsonrpc: '2.0',
@@ -24,13 +25,6 @@ export class PaymentApi {
   public static async checkPayment(pid: string): Promise<PaymentStatus> {
     const {data} = await $host.get(`pay/check/${pid}`)
 
-    switch (data.status) {
-    case PaymentStatus.SUCCESS:
-      return PaymentStatus.SUCCESS
-    case PaymentStatus.PROCESS:
-      return PaymentStatus.PROCESS
-    default:
-      throw new Error()
-    }
+    return PaymentStatusMapper.deserialize(data.status)
   }
 }

@@ -2,7 +2,7 @@ import {PaymentCard} from '../../model/PaymentCard'
 import {ApiPaymentCard} from '../models/ApiPaymentDto'
 
 export class PaymentCardMapper {
-  public static deserialize(data: PaymentCard): ApiPaymentCard {
+  public static serialize(data: PaymentCard): ApiPaymentCard {
     return {
       pan: data.cardNumber,
       cardholder: data.cardHolder,

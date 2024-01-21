@@ -36,6 +36,10 @@
             "error",
             "prefer-single"
         ],
-        "react/display-name": "off"
+        "react/display-name": "off",
+        "object-curly-spacing": [
+            "error",
+            "never"
+        ]
     }
 }

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, InputHTMLAttributes} from 'react'
+import {ChangeEvent, InputHTMLAttributes} from 'react'
 import styles from './Input.module.scss'
 import clsx from 'clsx'
 

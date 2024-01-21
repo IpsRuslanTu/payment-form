@@ -1,19 +1,17 @@
-import React, {FormEvent, useState} from 'react'
+import {FormEvent, useState} from 'react'
 import Input from '../../shared/ui/Input/Input'
 import Button from '../../shared/ui/Button/Button'
 import {PaymentCardHandler} from '../../shared/lib/PaymentCardHandler'
-import {PaymentApi} from '../../api/PaymentApi'
 import {PaymentCard, PaymentCardInputErrors} from '../../model/PaymentCard'
-import {PaymentStatus} from '../../model/PaymentStatus'
 import PaymentFormErrors from './components/PaymentFormErrors'
 import styles from './PaymentForm.module.scss'
 
 interface PaymentFormProps {
-  setPaymentStatus: (value: PaymentStatus, pid?: string) => void
+  onSubmit: (card: PaymentCard) => void
 }
 
 const PaymentForm = (props: PaymentFormProps) => {
-  const {setPaymentStatus} = props
+  const {onSubmit} = props
 
   const [formData, setFormData] = useState<PaymentCard>({
     cardNumber: '',
@@ -21,7 +19,6 @@ const PaymentForm = (props: PaymentFormProps) => {
     cvv: '',
     cardHolder: '',
   })
-
   const [errors, setErrors] = useState<PaymentCardInputErrors>({})
 
   const setCardNumber = (value: string) => {
@@ -40,22 +37,17 @@ const PaymentForm = (props: PaymentFormProps) => {
     setFormData({...formData, cardHolder: value})
   }
 
-  const pay = (e: FormEvent<HTMLFormElement>) => {
+  const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const validationErrors = PaymentCardHandler.validateInputCard(formData)
-
     if (!Object.values(validationErrors).every(value => value === undefined)) {
       setErrors(validationErrors)
       return
     }
 
     const dto = PaymentCardHandler.prepareDataToApi(formData)
-    PaymentApi.pay(dto)
-      .then(res => {
-        setPaymentStatus(PaymentStatus.PROCESS, res)
-      })
-      .catch(() => setPaymentStatus(PaymentStatus.FAIL))
+    onSubmit(dto)
   }
 
   return (
@@ -63,7 +55,7 @@ const PaymentForm = (props: PaymentFormProps) => {
       <h3 className={styles.title}>
         Оплата банковской картой
       </h3>
-      <form onSubmit={pay} className={styles.form} autoComplete='off'>
+      <form onSubmit={submit} className={styles.form}>
         <div className={styles.row}>
           <label htmlFor=''>Номер карты</label>
           <Input
@@ -97,7 +89,6 @@ const PaymentForm = (props: PaymentFormProps) => {
                 maxLength={PaymentCardHandler.cvvMaxLength}
                 onChange={setCVV}
                 filter={PaymentCardHandler.filterCVV}
-                autoComplete='off'
                 isWarning={!!errors.cvv}
               />
             </div>

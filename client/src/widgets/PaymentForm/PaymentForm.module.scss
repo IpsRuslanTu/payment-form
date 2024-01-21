@@ -1,6 +1,5 @@
 .container {
   width: 352px;
-
   background: #FFFFFF;
   padding: 50px 40px;
 }
@@ -8,6 +7,13 @@
 .form {
   display: flex;
   flex-direction: column;
+
+  label {
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 400;
+    color: #9A9A9A;
+  }
 }
 
 .title {
@@ -16,13 +22,6 @@
   line-height: 26px;
   text-align: center;
   margin-bottom: 30px;
-}
-
-.form label {
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: 400;
-  color: #9A9A9A;
 }
 
 .fromSection {

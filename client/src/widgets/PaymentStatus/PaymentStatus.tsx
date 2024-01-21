@@ -1,8 +1,7 @@
-import React from 'react'
 import {PaymentStatus} from '../../model/PaymentStatus'
 import SuccessSvg from './../../shared/assets/Vector.svg'
 import ErrorSvg from './../../shared/assets/Cross.svg'
-import styles from '../Proccessing/Proccessing.module.scss'
+import styles from './PaymentStatusWidget.module.scss'
 
 interface PaymentStatusProps {
   status: PaymentStatus
@@ -13,6 +12,7 @@ const PaymentStatusPage = (props: PaymentStatusProps) => {
 
   return (
     <div className={styles.container}>
+      {status === PaymentStatus.PROCESS && <>Оплата...</>}
       {status === PaymentStatus.SUCCESS && (
         <>
           Оплата прошла успешно
