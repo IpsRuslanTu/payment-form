@@ -20,9 +20,13 @@ export class PaymentCardHandler {
   }
 
   public static filterExpirationDate(value: string): string {
-    const test = value.replace(/\D/g, '')
+    const digitsOnly = value.replace(/\D/g, '')
 
-    return test.replace(/(\d{2})(\d{0,2})/, '$1/$2')
+    if (digitsOnly.length <= 2) {
+      return digitsOnly
+    } else {
+      return `${digitsOnly.slice(0, 2)}/${digitsOnly.slice(2, 4)}`
+    }
   }
 
   public static filterCVV(value: string): string {
