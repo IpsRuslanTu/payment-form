@@ -1,0 +1,45 @@
+.container {
+  width: 352px;
+
+  background: #FFFFFF;
+  padding: 50px 40px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form label {
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 400;
+  color: #9A9A9A;
+}
+
+.fromSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row {
+  margin-bottom: 35px;
+}
+
+.miniRow {
+  width: 80px;
+}
+
+.errors {
+  padding: 10px 10px 0 10px;
+  font-size: 10px;
+  color: red;
+}
