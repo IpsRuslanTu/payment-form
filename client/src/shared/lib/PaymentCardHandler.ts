@@ -1,8 +1,10 @@
-import {PaymentCard} from '../../model/PaymentCard'
+import {PaymentCard, PaymentCardInputErrors} from '../../model/PaymentCard'
 
 export class PaymentCardHandler {
-  public static cardNumberMaxLength = 16
-  public static cardNumberWithSpacesMaxLength = this.cardNumberMaxLength +3
+  public static cvvLength = 3
+  public static cardNumberMinLength = 13
+  public static cardNumberMaxLength = 19
+  public static cardNumberWithSpacesMaxLength = this.cardNumberMaxLength + 3
   public static cvvMaxLength = 3
   public static expirationDateMaxLength = 5
 
@@ -34,5 +36,52 @@ export class PaymentCardHandler {
       expirationDate: value.expirationDate,
       cardHolder: value.cardHolder
     }
+  }
+
+  public static validateInputCard(value: PaymentCard): PaymentCardInputErrors {
+    return {
+      cardNumber: this.validateCardNumber(value.cardNumber),
+      cvv: this.validateCVV(value.cvv),
+      expirationDate: this.validateExpirationDate(value.expirationDate),
+      cardHolder: this.validatePlaceholder(value.cardHolder)
+    }
+  }
+
+  private static validatePlaceholder(value: string): string | undefined {
+    const regex = /^\s*\w+\s+\w+\s*$/
+
+    if (regex.test(value)) {
+      return
+    }
+
+    return 'Владелец карты может состоять только из двух слов'
+  }
+
+  private static validateCardNumber(value: string): string | undefined {
+    const card = value.replace(/\D/g, '')
+
+    if (card.length >= this.cardNumberMinLength && card.length <= this.cardNumberMaxLength) {
+      return
+    }
+
+    return `Номер карты должен быть от ${this.cardNumberMinLength} до ${this.cardNumberMaxLength} символов`
+  }
+
+  private static validateCVV(value: string): string | undefined {
+    if (value.length === this.cvvLength) {
+      return
+    }
+
+    return `Код должен состоять из ${this.cvvLength} цифр`
+  }
+
+  private static validateExpirationDate(value: string): string | undefined {
+    const regex = /^(0[1-9]|1[0-2])\/(2[1-6])$/
+
+    if (regex.test(value)) {
+      return
+    }
+
+    return 'Месяц должен быть от 01 до 12, год от 21 до 26'
   }
 }
